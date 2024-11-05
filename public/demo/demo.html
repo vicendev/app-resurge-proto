@@ -1,0 +1,531 @@
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>ResurgeApp - Soluciones de Economía Circular</title><link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" /><style>
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #27ae60;
+    --text-color: #2c3e50;
+    --background: #ecf0f1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.features {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.catalog {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.material-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.material-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating-icon {
+    animation: float 6s ease-in-out infinite;
+}
+
+.pricing {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.pricing-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 1rem 0;
+}
+
+.price small {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.feature-list {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.feature-list li {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.feature-list li::before {
+    content: "✓";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.mission-vision {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    text-align: center;
+}
+
+.mission-vision h2 {
+    margin-bottom: 2rem;
+}
+
+.mission-vision div {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.login-section {
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.google-btn {
+    background: white;
+    border: 1px solid #ddd;
+    color: #444;
+}
+
+.google-btn:hover {
+    background: #f1f1f1;
+}
+
+.discord-btn {
+    background: #5865F2;
+    color: white;
+}
+
+.discord-btn:hover {
+    background: #4752c4;
+}
+
+.login-section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.profile-selector {
+    margin-bottom: 1rem;
+}
+
+.profile-selector button {
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border: 2px solid var(--primary-color);
+    background: white;
+    color: var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-selector button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.ai-chat {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.chat-input {
+    display: flex;
+    gap: 1rem;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-input button {
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+</style></head><body>
+
+<section class="hero">
+    <h1>ResurgeApp</h1>
+    <p>Transformando residuos en recursos valiosos</p>
+    <svg class="floating-icon" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5L95 95H5L50 5Z" fill="white" opacity="0.2"/>
+        <circle cx="50" cy="50" r="30" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M35 50L45 60L65 40" stroke="white" stroke-width="2"/>
+    </svg>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>IA para Reciclaje Inteligente</h3>
+        <p>Sistema de tutoría personalizado que mejora continuamente para optimizar tu experiencia de reciclaje.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Mapa Interactivo</h3>
+        <p>Localiza puntos de recolección y conecta con recolectores en tiempo real.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Cumplimiento Ley REP</h3>
+        <p>Herramientas avanzadas para gestionar el cumplimiento de la Ley de Responsabilidad Extendida del Productor.</p>
+    </div>
+</section>
+
+<section class="catalog">
+    <h2>Catálogo de Materiales Reciclables</h2>
+    <div class="material-grid">
+        <div class="material-card">
+            <h3>Plásticos</h3>
+            <ul>
+                <li>PET - Botellas de bebidas</li>
+                <li>HDPE - Envases de leche</li>
+                <li>LDPE - Plástico film</li>
+                <li>PP - Tapas y recipientes</li>
+                <li>PVC - Tuberías y tarjetas</li>
+            </ul>
+        </div>
+        <div class="material-card">
+            <h3>Metales</h3>
+            <ul>
+                <li>Hierro</li>
+                <li>Acero</li>
+                <li>Aluminio</li>
+                <li>Cobre</li>
+                <li>Latón</li>
+            </ul>
+        </div>
+        <div class="material-card">
+            <h3>Otros Materiales</h3>
+            <ul>
+                <li>Papel y Cartón</li>
+                <li>Vidrio</li>
+                <li>Textiles</li>
+                <li>Baterías</li>
+                <li>Residuos orgánicos</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="pricing">
+    <h2>Planes y Precios</h2>
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Freemium (Prepago)</h3>
+            <div class="price">$3.990 - $5.990 <small>CLP</small></div>
+            <ul class="feature-list">
+                <li>Acceso prepago por 7-15 días</li>
+                <li>Radio de notificaciones: 20km</li>
+                <li>Métricas básicas</li>
+                <li>Cupones de descuento</li>
+                <li>IA para tutoría de reciclaje</li>
+            </ul>
+        </div>
+        <div class="pricing-card">
+            <h3>Premium (Individual)</h3>
+            <div class="price">$6.990 <small>CLP/mes</small></div>
+            <div class="price">$59.990 <small>CLP/año</small></div>
+            <ul class="feature-list">
+                <li>Acceso 24/7</li>
+                <li>Radio de notificaciones: 60km</li>
+                <li>Métricas detalladas</li>
+                <li>Cupones de descuento</li>
+                <li>IA para tutoría de reciclaje</li>
+            </ul>
+        </div>
+        <div class="pricing-card">
+            <h3>Enterprise (Empresas)</h3>
+            <div class="price">$39.990 <small>CLP/mes</small></div>
+            <div class="price">$359.990 <small>CLP/año</small></div>
+            <ul class="feature-list">
+                <li>Acceso 24/7</li>
+                <li>Radio personalizable</li>
+                <li>Métricas completas</li>
+                <li>Informes Ley REP</li>
+                <li>Herramientas IA avanzadas</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="mission-vision">
+    <div>
+        <h2>Misión</h2>
+        <p>Transformar la forma en que el mundo gestiona sus residuos, facilitando el acceso a residuos a nivel industrial y doméstico, liderando una red de distribución eficiente y revolucionando el valor de los recursos reutilizables.</p>
+    </div>
+    <div>
+        <h2>Visión</h2>
+        <p>Ser la plataforma líder a nivel nacional para la economía circular, contribuyendo con la ley REP y fomentando una cultura de reutilización de materiales para un futuro sostenible.</p>
+    </div>
+</section>
+
+<section class="ai-chat">
+    <h2>Asistente IA de Reciclaje</h2>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Pregunta sobre reciclaje...">
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+</section>
+
+<div id="map"></div>
+
+<section class="login-section">
+    <h2>Ingresar a ResurgeApp</h2>
+    <div class="login-buttons">
+        <button onclick="handleGoogleLogin()" class="login-btn google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+            Ingresar con Google
+        </button>
+        <button onclick="handleDiscordLogin()" class="login-btn discord-btn">
+            <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo">
+            Ingresar con Discord
+        </button>
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-functions-compat.js"></script>
+<script>
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize map
+    let map = L.map('map').setView([-33.4489, -70.6693], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Request GPS location
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            map.setView([lat, lon], 15);
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('Tu ubicación actual')
+                .openPopup();
+        });
+    }
+
+    // Sample collection points (replace with real data)
+    const collectionPoints = [
+        {lat: -33.4489, lon: -70.6693, name: "Punto de Reciclaje 1"},
+        {lat: -33.4569, lon: -70.6483, name: "Punto de Reciclaje 2"},
+        {lat: -33.4379, lon: -70.6503, name: "Punto de Reciclaje 3"}
+    ];
+
+    collectionPoints.forEach(point => {
+        L.marker([point.lat, point.lon]).addTo(map)
+            .bindPopup(point.name);
+    });
+});
+
+
+async function handleGoogleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+        const result = await firebase.auth().signInWithPopup(provider);
+        console.log('Google login success:', result.user);
+        window.location.href = "main.html"; // Redirect after successful login
+    } catch (error) {
+        console.error('Google login error:', error);
+    }
+}
+
+async function handleDiscordLogin() {
+    // Discord OAuth2 implementation
+    const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
+    const REDIRECT_URI = encodeURIComponent('YOUR_REDIRECT_URI');
+    const DISCORD_OAUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=identify%20email`;
+    
+    window.location.href = DISCORD_OAUTH_URL;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación suave al hacer scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Efecto de aparición gradual para las cards
+    const cards = document.querySelectorAll('.feature-card, .material-card, .pricing-card');
+    const observer = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
+
+    cards.forEach(card => {
+        card.style.opacity = 0;
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(card);
+    });
+});
+</script>
+
+</body></html>
